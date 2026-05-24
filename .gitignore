@@ -1,0 +1,22 @@
+# Maven
+target/
+*.jar
+*.war
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Sensitive config (contains DB password)
+src/main/resources/application.yml
+
+# Logs
+*.log

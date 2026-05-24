@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布委托 - Komima</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #eef2ff 0%, #f0f9ff 50%, #f8fafc 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            color: var(--text);
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, #818cf8 100%) !important;
+            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.25);
+            padding: 12px 0;
+        }
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .navbar-brand .brand-icon {
+            background: rgba(255,255,255,0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .navbar .nav-link {
+            font-weight: 500;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+            transition: all 0.2s;
+            margin: 0 2px;
+        }
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 48px 0 32px;
+        }
+        .page-header .icon-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+        .page-header h2 {
+            font-weight: 800;
+            font-size: 1.75rem;
+        }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            padding: 36px;
+            margin: 0 auto;
+            max-width: 580px;
+        }
+        .form-card .form-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .form-card .form-control {
+            border-radius: 12px;
+            border: 1.5px solid var(--border);
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            transition: all 0.25s;
+            background: #f8fafc;
+        }
+        .form-card .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+            background: #fff;
+        }
+        .form-card textarea.form-control {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .btn { border-radius: 12px; font-weight: 600; padding: 12px 24px; transition: all 0.25s; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), #7c3aed);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+        }
+        .btn-outline-secondary {
+            border-radius: 12px;
+            border-color: var(--border);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+        }
+        .custom-toast {
+            background: white;
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            animation: slideInRight 0.35s ease;
+            min-width: 300px;
+            font-weight: 600;
+        }
+        .custom-toast.success { border-left: 4px solid #10b981; }
+        .custom-toast.error { border-left: 4px solid #ef4444; }
+        .custom-toast .toast-icon { font-size: 1.4rem; }
+        .custom-toast.success .toast-icon { color: #10b981; }
+        .custom-toast.error .toast-icon { color: #ef4444; }
+        @keyframes slideInRight {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .footer-bar {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 40px;
+        }
+
+        .tips-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 14px;
+            padding: 16px 20px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        .tips-box i { color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <div class="brand-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+                Komima
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-1"></i>首页</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="user-badge text-white" style="background:rgba(255,255,255,0.15);border-radius:50px;padding:6px 16px;display:flex;align-items:center;gap:8px;font-weight:500;">
+                        <span id="navUsername">用户</span>
+                    </div>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <div class="icon-circle"><i class="bi bi-pencil-square"></i></div>
+            <h2>发布新委托</h2>
+            <p>填写委托信息，其他同学看到后即可接单</p>
+        </div>
+
+        <div class="form-card">
+            <form id="publishForm">
+                <input type="hidden" id="userId">
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-tag-fill"></i>委托标题
+                    </label>
+                    <input type="text" class="form-control" id="title" placeholder="例如：代取快递、图书馆占座..." required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">
+                        <i class="bi bi-text-paragraph"></i>委托描述
+                    </label>
+                    <textarea class="form-control" id="content" rows="5" placeholder="请详细描述委托内容，包括时间、地点、具体要求等..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-send-fill me-2"></i>立即发布
+                </button>
+            </form>
+
+            <div class="tips-box mt-4">
+                <i class="bi bi-lightbulb-fill me-2"></i>
+                <strong>温馨提示：</strong>描述越详细，越容易被接单哦！别忘了留下联系方式。
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            &copy; 2026 Komima - 校园委托对接系统 · 课程设计项目
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = 'http://localhost:8080/api';
+        const userId = localStorage.getItem('userId');
+        const username = localStorage.getItem('username');
+        const role = localStorage.getItem('role');
+
+        const nickname = localStorage.getItem('nickname') || username;
+
+        if (!userId) { window.location.href = 'login.html'; }
+
+        document.getElementById('navUsername').textContent = nickname;
+        document.getElementById('userId').value = userId;
+
+         function showToast(message, type) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast ${type}`;
+            const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
+            toast.innerHTML = `<i class="bi ${icon} toast-icon"></i><span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.35s';
+                setTimeout(() => toast.remove(), 350);
+            }, 2500);
+        }
+
+        function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+
+        document.getElementById('publishForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const data = {
+                userId: parseInt(document.getElementById('userId').value),
+                title: document.getElementById('title').value,
+                content: document.getElementById('content').value
+            };
+            fetch(`${API_URL}/task/publish`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(res => res.json()).then(data => {
+                if (data.code === 200) {
+                    showToast('委托发布成功！', 'success');
+                    setTimeout(() => { window.location.href = 'index.html'; }, 800);
+                } else {
+                    showToast(data.message, 'error');
+                }
+            }).catch(() => {
+                showToast('网络错误，请检查后端是否启动', 'error');
+            });
+        });
+    </script>
+</body>
+</html>

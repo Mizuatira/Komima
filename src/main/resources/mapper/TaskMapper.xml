@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.komima.mapper.TaskMapper">
+
+    <resultMap id="TaskResultMap" type="com.komima.entity.Task">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
+        <result column="receiver_id" property="receiverId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.komima.entity.Task" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO task (title, content, user_id, status, receiver_id, create_time, update_time)
+        VALUES (#{title}, #{content}, #{userId}, #{status}, #{receiverId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="TaskResultMap">
+        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
+        FROM task
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultMap="TaskResultMap">
+        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
+        FROM task
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="TaskResultMap">
+        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
+        FROM task
+        WHERE user_id = #{userId}
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByReceiverId" parameterType="java.lang.Integer" resultMap="TaskResultMap">
+        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
+        FROM task
+        WHERE receiver_id = #{receiverId}
+        ORDER BY create_time DESC
+    </select>
+
+    <update id="update" parameterType="com.komima.entity.Task">
+        UPDATE task
+        SET title = #{title},
+            content = #{content},
+            user_id = #{userId},
+            status = #{status},
+            receiver_id = #{receiverId},
+            create_time = #{createTime},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE task
+        SET status = #{status},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateReceiver">
+        UPDATE task
+        SET receiver_id = #{receiverId},
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM task WHERE id = #{id}
+    </delete>
+</mapper>
