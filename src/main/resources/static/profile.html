@@ -8,85 +8,41 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         :root { --primary: #6366f1; --primary-dark: #4f46e5; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
-        * { box-sizing: border-box; }
-        body {
-            background: linear-gradient(135deg, #eef2ff 0%, #f0f9ff 50%, #f8fafc 100%);
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            color: var(--text);
-        }
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, #818cf8 100%) !important;
-            box-shadow: 0 4px 24px rgba(99,102,241,0.25);
-            padding: 12px 0;
-        }
-        .navbar-brand { font-weight: 800; font-size: 1.5rem; display: flex; align-items: center; gap: 8px; }
-        .navbar-brand .brand-icon {
-            background: rgba(255,255,255,0.2);
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem;
-        }
-        .navbar .nav-link { font-weight: 500; padding: 8px 16px !important; border-radius: 8px; transition: all 0.2s; margin: 0 2px; }
-        .navbar .nav-link:hover, .navbar .nav-link.active { background: rgba(255,255,255,0.15); }
-        .user-badge {
-            background: rgba(255,255,255,0.15); border-radius: 50px;
-            padding: 6px 16px; display: flex; align-items: center; gap: 8px; font-weight: 500;
-        }
-        .user-avatar {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: linear-gradient(135deg, #f59e0b, #fbbf24);
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: 700; font-size: 0.85rem;
-        }
-        .profile-card {
-            background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-            padding: 32px; max-width: 680px; margin: 28px auto;
-        }
-        .profile-header { text-align: center; margin-bottom: 28px; }
-        .avatar-circle {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), #8b5cf6);
-            display: inline-flex; align-items: center; justify-content: center;
-            color: white; font-size: 2rem; font-weight: 800; margin-bottom: 12px;
-        }
-        .profile-header h3 { font-weight: 800; }
-        .form-control, .form-select {
-            border-radius: 12px; border: 1.5px solid var(--border);
-            padding: 10px 14px; font-size: 0.92rem; transition: all 0.25s; background: #f8fafc;
-        }
-        .form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.12); background: #fff; }
-        .form-label { font-weight: 700; font-size: 0.85rem; }
-        .btn { border-radius: 12px; font-weight: 600; padding: 10px 24px; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary), #8b5cf6); border: none; }
-        .btn-primary:hover { background: linear-gradient(135deg, var(--primary-dark), #7c3aed); transform: translateY(-1px); }
-        .toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; }
-        .custom-toast {
-            background: white; border-radius: 14px; padding: 16px 20px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15); display: flex; align-items: center; gap: 12px;
-            margin-bottom: 10px; animation: slideInRight 0.35s ease; font-weight: 600;
-        }
-        .custom-toast.success { border-left: 4px solid #10b981; }
-        @keyframes slideInRight { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        body { min-height:100vh; background: linear-gradient(160deg,#eef2ff,#f0f9ff,#f8fafc); font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; color:var(--text); }
+        .navbar { background: linear-gradient(135deg,var(--primary-dark),var(--primary),#818cf8); box-shadow:0 4px 24px rgba(99,102,241,0.25); padding:10px 0; }
+        .navbar-brand { font-weight:800; font-size:1.4rem; display:flex; align-items:center; gap:8px; }
+        .navbar .nav-link { color:#fff; font-weight:500; padding:8px 16px; border-radius:8px; transition:all 0.2s; margin:0 2px; }
+        .navbar .nav-link:hover, .navbar .nav-link.active { background:rgba(255,255,255,0.15); }
+        .user-badge { background:rgba(255,255,255,0.15); border-radius:50px; padding:5px 14px; display:flex; align-items:center; gap:8px; font-weight:500; color:#fff; }
+        .user-avatar { width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#fbbf24,#f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:0.8rem; }
+        .data-card { background:#fff; border-radius:20px; box-shadow:0 4px 24px rgba(0,0,0,0.06); padding:36px; max-width:600px; margin:32px auto; }
+        .data-card h3 { font-weight:800; text-align:center; margin-bottom:24px; }
+        .form-control, .form-select { border-radius:12px; border:1.5px solid var(--border); padding:10px 14px; font-size:0.92rem; background:#f8fafc; }
+        .form-control:focus, .form-select:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(99,102,241,0.12); background:#fff; }
+        .btn-primary { background:var(--primary); border:none; border-radius:12px; font-weight:600; padding:12px; }
+        .btn-primary:hover { background:var(--primary-dark); }
+        .toast-container { position:fixed; top:24px; right:24px; z-index:9999; }
+        .custom-toast { background:#fff; border-radius:14px; padding:14px 18px; box-shadow:0 12px 40px rgba(0,0,0,0.15); margin-bottom:8px; font-weight:600; animation:slideIn 0.35s; }
+        .custom-toast.success { border-left:4px solid #10b981; color:#065f46; }
+        .custom-toast.error { border-left:4px solid #ef4444; color:#991b1b; }
+        @keyframes slideIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <div class="brand-icon"><i class="bi bi-lightning-charge-fill"></i></div>Komima
-            </a>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-lightning-charge-fill"></i>Komima</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pnav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="pnav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-1"></i>首页</a></li>
-                    <li class="nav-item" id="adminNavLink" style="display:none">
-                        <a class="nav-link" href="index.html"><i class="bi bi-shield-lock-fill me-1"></i>后台</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link active" href="profile.html"><i class="bi bi-person-fill me-1"></i>个人中心</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill me-1"></i>首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="publish.html"><i class="bi bi-plus-circle-fill me-1"></i>发布</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="profile.html"><i class="bi bi-person-fill me-1"></i>个人</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
-                    <div class="user-badge text-white">
+                    <div class="user-badge">
                         <div class="user-avatar" id="userAvatar">U</div>
                         <span id="currentUser">用户</span>
                     </div>
@@ -97,53 +53,45 @@
     </nav>
 
     <div class="container">
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="avatar-circle" id="profileAvatar">U</div>
-                <h3 id="profileNickname">加载中...</h3>
-                <p style="color:var(--text-muted);">账号: <span id="profileUsername"></span></p>
-            </div>
-            <form id="profileForm">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-pencil-fill me-1"></i>昵称</label>
-                        <input class="form-control" id="nickname" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-gender-ambiguous me-1"></i>性别</label>
-                        <select class="form-select" id="gender">
-                            <option value="0">未设置</option><option value="1">男</option><option value="2">女</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-building me-1"></i>学院</label>
-                        <input class="form-control" id="college" placeholder="如：计算机学院">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-book me-1"></i>专业</label>
-                        <input class="form-control" id="major" placeholder="如：软件工程">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-telephone-fill me-1"></i>联系电话</label>
-                        <input class="form-control" id="phone" placeholder="手机号码">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-wechat me-1"></i>微信号</label>
-                        <input class="form-control" id="wechat" placeholder="微信号">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-tencent-qq me-1"></i>QQ号</label>
-                        <input class="form-control" id="qq" placeholder="QQ号码">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label"><i class="bi bi-envelope-fill me-1"></i>邮箱</label>
-                        <input class="form-control" id="email" placeholder="邮箱地址">
-                    </div>
+        <div class="data-card">
+            <h3><i class="bi bi-person-fill me-2"></i>编辑个人资料</h3>
+            <form id="profileForm"><div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">昵称</label>
+                    <input class="form-control" id="pfNickname" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 mt-4">
-                    <i class="bi bi-check-lg me-2"></i>保存修改
-                </button>
-            </form>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">性别</label>
+                    <select class="form-select" id="pfGender">
+                        <option value="0">未设置</option><option value="1">男</option><option value="2">女</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">学院</label>
+                    <input class="form-control" id="pfCollege">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">专业</label>
+                    <input class="form-control" id="pfMajor">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">电话</label>
+                    <input class="form-control" id="pfPhone">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">微信</label>
+                    <input class="form-control" id="pfWechat">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">QQ</label>
+                    <input class="form-control" id="pfQq">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">邮箱</label>
+                    <input class="form-control" id="pfEmail">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-4"><i class="bi bi-check-lg me-1"></i>保存修改</button></form>
         </div>
     </div>
 
@@ -151,65 +99,59 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = 'http://localhost:8080/api';
-        const userId = localStorage.getItem('userId');
-        const nickname = localStorage.getItem('nickname') || '用户';
+        const API = 'http://localhost:8080/api';
+        const uid = localStorage.getItem('userId');
+        const nick = localStorage.getItem('nickname') || '用户';
         const role = localStorage.getItem('role');
-        if (!userId) { window.location.href = 'login.html'; }
+        if (!uid) location.href = 'login.html';
 
-        document.getElementById('currentUser').textContent = nickname;
-        document.getElementById('userAvatar').textContent = nickname.charAt(0).toUpperCase();
-        if (role === '1') document.getElementById('adminNavLink').style.display = '';
+        document.getElementById('currentUser').textContent = nick;
+        document.getElementById('userAvatar').textContent = nick.charAt(0).toUpperCase();
 
-        function showToast(msg) {
+        function logout() { localStorage.clear(); location.href = 'login.html'; }
+        function toast(msg, type) {
+            type = type || 'success';
             const t = document.createElement('div');
-            t.className = 'custom-toast success';
+            t.className = `custom-toast ${type}`;
             t.innerHTML = `<span>${msg}</span>`;
             document.getElementById('toastContainer').appendChild(t);
-            setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.35s'; setTimeout(()=>t.remove(),350); }, 2500);
+            setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 2500);
         }
-        function logout() { localStorage.clear(); window.location.href='login.html'; }
 
-        fetch(`${API_URL}/user/${userId}`).then(r => r.json()).then(d => {
-            if (d.code === 200) {
-                const u = d.data;
-                document.getElementById('profileAvatar').textContent = (u.nickname || u.username).charAt(0).toUpperCase();
-                document.getElementById('profileNickname').textContent = u.nickname || u.username;
-                document.getElementById('profileUsername').textContent = u.username;
-                document.getElementById('nickname').value = u.nickname || '';
-                document.getElementById('gender').value = u.gender || 0;
-                document.getElementById('college').value = u.college || '';
-                document.getElementById('major').value = u.major || '';
-                document.getElementById('phone').value = u.phone || '';
-                document.getElementById('wechat').value = u.wechat || '';
-                document.getElementById('qq').value = u.qq || '';
-                document.getElementById('email').value = u.email || '';
-            }
+        fetch(`${API}/user/${uid}`).then(r => r.json()).then(d => {
+            if (d.code !== 200) return;
+            const u = d.data;
+            document.getElementById('pfNickname').value = u.nickname || '';
+            document.getElementById('pfGender').value = u.gender || 0;
+            document.getElementById('pfCollege').value = u.college || '';
+            document.getElementById('pfMajor').value = u.major || '';
+            document.getElementById('pfPhone').value = u.phone || '';
+            document.getElementById('pfWechat').value = u.wechat || '';
+            document.getElementById('pfQq').value = u.qq || '';
+            document.getElementById('pfEmail').value = u.email || '';
         });
 
         document.getElementById('profileForm').addEventListener('submit', e => {
             e.preventDefault();
-            const data = {
-                nickname: document.getElementById('nickname').value,
-                gender: parseInt(document.getElementById('gender').value),
-                college: document.getElementById('college').value,
-                major: document.getElementById('major').value,
-                phone: document.getElementById('phone').value,
-                wechat: document.getElementById('wechat').value,
-                qq: document.getElementById('qq').value,
-                email: document.getElementById('email').value
-            };
-            fetch(`${API_URL}/user/${userId}/profile`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+            fetch(`${API}/user/${uid}/profile`, {
+                method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    nickname: document.getElementById('pfNickname').value,
+                    gender: parseInt(document.getElementById('pfGender').value),
+                    college: document.getElementById('pfCollege').value,
+                    major: document.getElementById('pfMajor').value,
+                    phone: document.getElementById('pfPhone').value,
+                    wechat: document.getElementById('pfWechat').value,
+                    qq: document.getElementById('pfQq').value,
+                    email: document.getElementById('pfEmail').value
+                })
             }).then(r => r.json()).then(d => {
                 if (d.code === 200) {
-                    localStorage.setItem('nickname', data.nickname);
-                    document.getElementById('currentUser').textContent = data.nickname;
-                    document.getElementById('userAvatar').textContent = data.nickname.charAt(0).toUpperCase();
-                    showToast('保存成功');
-                }
+                    localStorage.setItem('nickname', document.getElementById('pfNickname').value);
+                    document.getElementById('currentUser').textContent = document.getElementById('pfNickname').value;
+                    document.getElementById('userAvatar').textContent = document.getElementById('pfNickname').value.charAt(0).toUpperCase();
+                    toast('已保存');
+                } else toast(d.message, 'error');
             });
         });
     </script>

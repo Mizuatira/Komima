@@ -5,51 +5,35 @@
     <resultMap id="EvaluateResultMap" type="com.komima.entity.Evaluate">
         <id column="id" property="id"/>
         <result column="task_id" property="taskId"/>
-        <result column="user_id" property="userId"/>
+        <result column="from_user_id" property="fromUserId"/>
+        <result column="to_user_id" property="toUserId"/>
         <result column="score" property="score"/>
         <result column="content" property="content"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.komima.entity.Evaluate" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO evaluate (task_id, user_id, score, content, create_time)
-        VALUES (#{taskId}, #{userId}, #{score}, #{content}, #{createTime})
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO evaluate (task_id, from_user_id, to_user_id, score, content, create_time)
+        VALUES (#{taskId}, #{fromUserId}, #{toUserId}, #{score}, #{content}, #{createTime})
     </insert>
 
-    <select id="selectById" parameterType="java.lang.Integer" resultMap="EvaluateResultMap">
-        SELECT id, task_id, user_id, score, content, create_time
-        FROM evaluate
-        WHERE id = #{id}
+    <select id="selectByTaskId" resultMap="EvaluateResultMap">
+        SELECT * FROM evaluate WHERE task_id = #{taskId} ORDER BY create_time DESC
     </select>
 
-    <select id="selectByTaskId" parameterType="java.lang.Integer" resultMap="EvaluateResultMap">
-        SELECT id, task_id, user_id, score, content, create_time
-        FROM evaluate
-        WHERE task_id = #{taskId}
-        ORDER BY create_time DESC
+    <select id="selectByUserId" resultMap="EvaluateResultMap">
+        SELECT * FROM evaluate WHERE to_user_id = #{userId} ORDER BY create_time DESC
     </select>
 
-    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="EvaluateResultMap">
-        SELECT * FROM evaluate
-        WHERE user_id = #{userId}
-        ORDER BY create_time DESC
+    <select id="selectByTaskAndFromUser" resultMap="EvaluateResultMap">
+        SELECT * FROM evaluate WHERE task_id = #{taskId} AND from_user_id = #{fromUserId}
     </select>
 
     <select id="selectAll" resultMap="EvaluateResultMap">
         SELECT * FROM evaluate ORDER BY create_time DESC
     </select>
 
-    <update id="update" parameterType="com.komima.entity.Evaluate">
-        UPDATE evaluate
-        SET task_id = #{taskId},
-            user_id = #{userId},
-            score = #{score},
-            content = #{content},
-            create_time = #{createTime}
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteById" parameterType="java.lang.Integer">
+    <delete id="deleteById">
         DELETE FROM evaluate WHERE id = #{id}
     </delete>
 </mapper>

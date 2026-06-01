@@ -2,8 +2,8 @@ package com.komima.enums;
 
 public enum TaskStatus {
 
-    PENDING(0, "未接单"),
-    ACCEPTED(1, "已接单"),
+    PENDING(0, "待接单"),
+    IN_PROGRESS(1, "进行中"),
     COMPLETED(2, "已完成");
 
     private final int code;
@@ -31,15 +31,7 @@ public enum TaskStatus {
         throw new IllegalArgumentException("无效的任务状态: " + code);
     }
 
-    public static boolean canAccept(TaskStatus status) {
-        return status == PENDING;
-    }
-
-    public static boolean canComplete(TaskStatus status) {
-        return status == ACCEPTED;
-    }
-
-    public static boolean canEvaluate(TaskStatus status) {
-        return status == COMPLETED;
+    public static boolean canComplete(TaskStatus current) {
+        return current == IN_PROGRESS;
     }
 }

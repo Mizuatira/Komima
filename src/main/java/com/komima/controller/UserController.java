@@ -1,8 +1,8 @@
 package com.komima.controller;
 
 import com.komima.dto.ApiResponse;
-import com.komima.dto.LoginDTO;
 import com.komima.dto.ProfileDTO;
+import com.komima.dto.LoginDTO;
 import com.komima.dto.RegisterDTO;
 import com.komima.entity.User;
 import com.komima.service.UserService;
@@ -22,14 +22,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ApiResponse<User> register(@Valid @RequestBody RegisterDTO dto) {
-        User user = userService.register(dto);
-        return ApiResponse.success("注册成功", user);
+        return ApiResponse.success("注册成功", userService.register(dto));
     }
 
     @PostMapping("/login")
     public ApiResponse<User> login(@Valid @RequestBody LoginDTO dto) {
-        User user = userService.login(dto);
-        return ApiResponse.success("登录成功", user);
+        return ApiResponse.success("登录成功", userService.login(dto));
     }
 
     @GetMapping("/{id}")
@@ -45,6 +43,6 @@ public class UserController {
     @PutMapping("/{id}/profile")
     public ApiResponse<Void> updateProfile(@PathVariable Integer id, @Valid @RequestBody ProfileDTO dto) {
         userService.updateProfile(id, dto);
-        return ApiResponse.success("个人信息已更新", null);
+        return ApiResponse.success("保存成功", null);
     }
 }

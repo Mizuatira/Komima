@@ -19,8 +19,6 @@ public interface UserMapper {
 
     List<User> selectAll();
 
-    int update(User user);
-
     int updateProfile(User user);
 
     int updateRole(@Param("id") Integer id, @Param("role") Integer role);

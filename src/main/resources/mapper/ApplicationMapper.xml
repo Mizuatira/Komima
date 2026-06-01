@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.komima.mapper.ApplicationMapper">
+
+    <resultMap id="ApplicationResultMap" type="com.komima.entity.Application">
+        <id column="id" property="id"/>
+        <result column="task_id" property="taskId"/>
+        <result column="applicant_id" property="applicantId"/>
+        <result column="status" property="status"/>
+        <result column="confirm_publisher" property="confirmPublisher"/>
+        <result column="confirm_applicant" property="confirmApplicant"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO application (task_id, applicant_id, status, confirm_publisher, confirm_applicant, create_time)
+        VALUES (#{taskId}, #{applicantId}, 0, 0, 0, #{createTime})
+    </insert>
+
+    <select id="selectById" resultMap="ApplicationResultMap">
+        SELECT * FROM application WHERE id = #{id}
+    </select>
+
+    <select id="selectByTaskId" resultMap="ApplicationResultMap">
+        SELECT * FROM application WHERE task_id = #{taskId} ORDER BY create_time ASC
+    </select>
+
+    <select id="selectByTaskAndApplicant" resultMap="ApplicationResultMap">
+        SELECT * FROM application WHERE task_id = #{taskId} AND applicant_id = #{applicantId}
+    </select>
+
+    <select id="countApprovedByTaskId" resultType="int">
+        SELECT COUNT(*) FROM application WHERE task_id = #{taskId} AND status = 1
+    </select>
+
+    <select id="countConfirmedByTaskId" resultType="int">
+        SELECT COUNT(*) FROM application WHERE task_id = #{taskId} AND status = 1
+        AND confirm_publisher = 1 AND confirm_applicant = 1
+    </select>
+
+    <update id="updateStatus">
+        UPDATE application SET status = #{status} WHERE id = #{id}
+    </update>
+
+    <update id="confirmPublisher">
+        UPDATE application SET confirm_publisher = 1 WHERE id = #{id}
+    </update>
+
+    <update id="confirmApplicant">
+        UPDATE application SET confirm_applicant = 1 WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM application WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByTaskId">
+        DELETE FROM application WHERE task_id = #{taskId}
+    </delete>
+</mapper>

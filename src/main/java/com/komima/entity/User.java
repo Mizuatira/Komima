@@ -1,9 +1,12 @@
 package com.komima.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.time.LocalDateTime;
 
 @Data
+@Accessors(chain = true)
 public class User {
 
     private Integer id;
@@ -18,6 +21,10 @@ public class User {
     private String wechat;
     private String qq;
     private String email;
+
+    /** 子查询注入 */
+    private transient Double avgRating;
+
     private LocalDateTime createTime;
 
     public boolean isAdmin() {

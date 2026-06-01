@@ -1,4 +1,3 @@
-
 package com.komima.mapper;
 
 import com.komima.entity.Evaluate;
@@ -11,16 +10,14 @@ import java.util.List;
 public interface EvaluateMapper {
 
     int insert(Evaluate evaluate);
-    
-    Evaluate selectById(@Param("id") Integer id);
-    
+
     List<Evaluate> selectByTaskId(@Param("taskId") Integer taskId);
-    
+
     List<Evaluate> selectByUserId(@Param("userId") Integer userId);
 
     List<Evaluate> selectAll();
 
-    int update(Evaluate evaluate);
-    
+    Evaluate selectByTaskAndFromUser(@Param("taskId") Integer taskId, @Param("fromUserId") Integer fromUserId);
+
     int deleteById(@Param("id") Integer id);
 }

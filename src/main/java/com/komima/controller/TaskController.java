@@ -19,13 +19,18 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping("/publish")
-    public ApiResponse<Task> publish(@Valid @RequestBody TaskDTO taskDTO) {
-        Task task = taskService.publish(taskDTO);
-        return ApiResponse.success("发布成功", task);
+    public ApiResponse<Task> publish(@Valid @RequestBody TaskDTO dto) {
+        return ApiResponse.success("发布成功", taskService.publish(dto));
     }
 
     @GetMapping("/list")
-    public ApiResponse<List<Task>> list() {
+    public ApiResponse<List<Task>> list(@RequestParam(required = false) Integer status,
+                                        @RequestParam(required = false) Integer category,
+                                        @RequestParam(required = false) Integer hasReward,
+                                        @RequestParam(required = false) Integer excludeUserId) {
+        if (status != null || category != null || hasReward != null || excludeUserId != null) {
+            return ApiResponse.success(taskService.listFiltered(status, category, hasReward, excludeUserId));
+        }
         return ApiResponse.success(taskService.listAll());
     }
 
@@ -34,9 +39,9 @@ public class TaskController {
         return ApiResponse.success(taskService.listByUserId(userId));
     }
 
-    @GetMapping("/list/receiver/{receiverId}")
-    public ApiResponse<List<Task>> listByReceiver(@PathVariable Integer receiverId) {
-        return ApiResponse.success(taskService.listByReceiverId(receiverId));
+    @GetMapping("/list/applicant/{applicantId}")
+    public ApiResponse<List<Task>> listByApplicant(@PathVariable Integer applicantId) {
+        return ApiResponse.success(taskService.listByApplicantId(applicantId));
     }
 
     @GetMapping("/{id}")
@@ -44,17 +49,9 @@ public class TaskController {
         return ApiResponse.success(taskService.getById(id));
     }
 
-    @PostMapping("/{id}/accept")
-    public ApiResponse<Void> accept(@PathVariable Integer id, @RequestParam Integer userId) {
-        taskService.acceptTask(id, userId);
-        return ApiResponse.success("接单成功", null);
-    }
-
-    @PostMapping("/{id}/status")
-    public ApiResponse<Void> updateStatus(@PathVariable Integer id,
-                                           @RequestParam Integer status,
-                                           @RequestParam Integer userId) {
-        taskService.updateStatus(id, status, userId);
-        return ApiResponse.success("状态更新成功", null);
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> deleteMyTask(@PathVariable Integer id, @RequestParam Integer userId) {
+        taskService.deleteMyPendingTask(id, userId);
+        return ApiResponse.success("已删除", null);
     }
 }

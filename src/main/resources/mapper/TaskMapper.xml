@@ -8,69 +8,62 @@
         <result column="content" property="content"/>
         <result column="user_id" property="userId"/>
         <result column="status" property="status"/>
-        <result column="receiver_id" property="receiverId"/>
+        <result column="category" property="category"/>
+        <result column="has_reward" property="hasReward"/>
+        <result column="recruit_count" property="recruitCount"/>
+        <result column="approved_count" property="approvedCount"/>
+        <result column="apply_count" property="applyCount"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.komima.entity.Task" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO task (title, content, user_id, status, receiver_id, create_time, update_time)
-        VALUES (#{title}, #{content}, #{userId}, #{status}, #{receiverId}, #{createTime}, #{updateTime})
+    <sql id="selectColumns">
+        t.id, t.title, t.content, t.user_id, t.status,
+        t.category, t.has_reward, t.recruit_count,
+        t.create_time, t.update_time,
+        (SELECT COUNT(*) FROM application a WHERE a.task_id = t.id AND a.status = 0) AS apply_count,
+        (SELECT COUNT(*) FROM application a WHERE a.task_id = t.id AND a.status = 1) AS approved_count
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO task (title, content, user_id, status, category, has_reward, recruit_count, create_time, update_time)
+        VALUES (#{title}, #{content}, #{userId}, 0, #{category}, #{hasReward}, #{recruitCount}, #{createTime}, #{updateTime})
     </insert>
 
-    <select id="selectById" parameterType="java.lang.Integer" resultMap="TaskResultMap">
-        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
-        FROM task
-        WHERE id = #{id}
+    <select id="selectById" resultMap="TaskResultMap">
+        SELECT <include refid="selectColumns"/> FROM task t WHERE t.id = #{id}
     </select>
 
     <select id="selectAll" resultMap="TaskResultMap">
-        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
-        FROM task
-        ORDER BY create_time DESC
+        SELECT <include refid="selectColumns"/> FROM task t ORDER BY t.create_time DESC
     </select>
 
-    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="TaskResultMap">
-        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
-        FROM task
-        WHERE user_id = #{userId}
-        ORDER BY create_time DESC
+    <select id="selectFiltered" resultMap="TaskResultMap">
+        SELECT <include refid="selectColumns"/> FROM task t
+        <where>
+            <if test="status != null">AND t.status = #{status}</if>
+            <if test="category != null">AND t.category = #{category}</if>
+            <if test="hasReward != null">AND t.has_reward = #{hasReward}</if>
+            <if test="excludeUserId != null">AND t.user_id != #{excludeUserId}</if>
+        </where>
+        ORDER BY t.create_time DESC
     </select>
 
-    <select id="selectByReceiverId" parameterType="java.lang.Integer" resultMap="TaskResultMap">
-        SELECT id, title, content, user_id, status, receiver_id, create_time, update_time
-        FROM task
-        WHERE receiver_id = #{receiverId}
-        ORDER BY create_time DESC
+    <select id="selectByUserId" resultMap="TaskResultMap">
+        SELECT <include refid="selectColumns"/> FROM task t WHERE t.user_id = #{userId} ORDER BY t.create_time DESC
     </select>
 
-    <update id="update" parameterType="com.komima.entity.Task">
-        UPDATE task
-        SET title = #{title},
-            content = #{content},
-            user_id = #{userId},
-            status = #{status},
-            receiver_id = #{receiverId},
-            create_time = #{createTime},
-            update_time = #{updateTime}
-        WHERE id = #{id}
-    </update>
+    <select id="selectByApplicantId" resultMap="TaskResultMap">
+        SELECT <include refid="selectColumns"/> FROM task t
+        WHERE t.id IN (SELECT a.task_id FROM application a WHERE a.applicant_id = #{applicantId} AND a.status = 1)
+        ORDER BY t.create_time DESC
+    </select>
 
     <update id="updateStatus">
-        UPDATE task
-        SET status = #{status},
-            update_time = NOW()
-        WHERE id = #{id}
+        UPDATE task SET status = #{status}, update_time = NOW() WHERE id = #{id}
     </update>
 
-    <update id="updateReceiver">
-        UPDATE task
-        SET receiver_id = #{receiverId},
-            update_time = NOW()
-        WHERE id = #{id}
-    </update>
-
-    <delete id="deleteById" parameterType="java.lang.Integer">
+    <delete id="deleteById">
         DELETE FROM task WHERE id = #{id}
     </delete>
 </mapper>

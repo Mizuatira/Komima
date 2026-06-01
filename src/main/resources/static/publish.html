@@ -7,295 +7,127 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            background: linear-gradient(135deg, #eef2ff 0%, #f0f9ff 50%, #f8fafc 100%);
-            min-height: 100vh;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            color: var(--text);
-        }
-
-        .navbar {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, #818cf8 100%) !important;
-            box-shadow: 0 4px 24px rgba(99, 102, 241, 0.25);
-            padding: 12px 0;
-        }
-        .navbar-brand {
-            font-weight: 800;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .navbar-brand .brand-icon {
-            background: rgba(255,255,255,0.2);
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-        .navbar .nav-link {
-            font-weight: 500;
-            padding: 8px 16px !important;
-            border-radius: 8px;
-            transition: all 0.2s;
-            margin: 0 2px;
-        }
-        .navbar .nav-link:hover,
-        .navbar .nav-link.active {
-            background: rgba(255,255,255,0.15);
-        }
-
-        .page-header {
-            text-align: center;
-            padding: 48px 0 32px;
-        }
-        .page-header .icon-circle {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #eef2ff, #e0e7ff);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 2rem;
-            margin-bottom: 16px;
-        }
-        .page-header h2 {
-            font-weight: 800;
-            font-size: 1.75rem;
-        }
-        .page-header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .form-card {
-            background: #ffffff;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-            padding: 36px;
-            margin: 0 auto;
-            max-width: 580px;
-        }
-        .form-card .form-label {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--text);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .form-card .form-control {
-            border-radius: 12px;
-            border: 1.5px solid var(--border);
-            padding: 12px 16px;
-            font-size: 0.95rem;
-            transition: all 0.25s;
-            background: #f8fafc;
-        }
-        .form-card .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-            background: #fff;
-        }
-        .form-card textarea.form-control {
-            resize: vertical;
-            min-height: 140px;
-        }
-
-        .btn { border-radius: 12px; font-weight: 600; padding: 12px 24px; transition: all 0.25s; }
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #8b5cf6);
-            border: none;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #7c3aed);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(99,102,241,0.4);
-        }
-        .btn-outline-secondary {
-            border-radius: 12px;
-            border-color: var(--border);
-        }
-
-        .toast-container {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 9999;
-        }
-        .custom-toast {
-            background: white;
-            border-radius: 14px;
-            padding: 16px 20px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-            animation: slideInRight 0.35s ease;
-            min-width: 300px;
-            font-weight: 600;
-        }
-        .custom-toast.success { border-left: 4px solid #10b981; }
-        .custom-toast.error { border-left: 4px solid #ef4444; }
-        .custom-toast .toast-icon { font-size: 1.4rem; }
-        .custom-toast.success .toast-icon { color: #10b981; }
-        .custom-toast.error .toast-icon { color: #ef4444; }
-        @keyframes slideInRight {
-            from { transform: translateX(120%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .footer-bar {
-            text-align: center;
-            padding: 32px;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 40px;
-        }
-
-        .tips-box {
-            background: #fffbeb;
-            border: 1px solid #fcd34d;
-            border-radius: 14px;
-            padding: 16px 20px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
-        .tips-box i { color: #f59e0b; }
+        :root { --primary: #6366f1; --primary-dark: #4f46e5; --text: #1e293b; --text-muted: #64748b; --border: #e2e8f0; }
+        body { min-height:100vh; background: linear-gradient(160deg,#eef2ff,#f0f9ff,#f8fafc); font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif; color:var(--text); }
+        .navbar { background: linear-gradient(135deg,var(--primary-dark),var(--primary),#818cf8); box-shadow:0 4px 24px rgba(99,102,241,0.25); padding:10px 0; }
+        .navbar-brand { font-weight:800; font-size:1.4rem; display:flex; align-items:center; gap:8px; }
+        .navbar .nav-link { color:#fff; font-weight:500; padding:8px 16px; border-radius:8px; transition:all 0.2s; margin:0 2px; }
+        .navbar .nav-link:hover, .navbar .nav-link.active { background:rgba(255,255,255,0.15); }
+        .user-badge { background:rgba(255,255,255,0.15); border-radius:50px; padding:5px 14px; display:flex; align-items:center; gap:8px; font-weight:500; color:#fff; }
+        .user-avatar { width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#fbbf24,#f59e0b); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:0.8rem; }
+        .form-card { background:#fff; border-radius:20px; box-shadow:0 4px 24px rgba(0,0,0,0.06); padding:36px; max-width:600px; margin:32px auto; }
+        .form-card h3 { font-weight:800; text-align:center; margin-bottom:24px; }
+        .form-control, .form-select { border-radius:12px; border:1.5px solid var(--border); padding:10px 14px; font-size:0.92rem; background:#f8fafc; }
+        .form-control:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(99,102,241,0.12); }
+        .btn-primary { background:var(--primary); border:none; border-radius:12px; font-weight:600; padding:12px; }
+        .btn-primary:hover { background:var(--primary-dark); }
+        .btn-check + .btn { border-radius:50px; padding:8px 20px; font-weight:600; }
+        .toast-container { position:fixed; top:24px; right:24px; z-index:9999; }
+        .custom-toast { background:#fff; border-radius:14px; padding:14px 18px; box-shadow:0 12px 40px rgba(0,0,0,0.15); margin-bottom:8px; font-weight:600; animation:slideIn 0.35s; }
+        .custom-toast.success { border-left:4px solid #10b981; color:#065f46; }
+        .custom-toast.error { border-left:4px solid #ef4444; color:#991b1b; }
+        @keyframes slideIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">
-                <div class="brand-icon"><i class="bi bi-lightning-charge-fill"></i></div>
-                Komima
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-lightning-charge-fill"></i>Komima</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#pnav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse" id="pnav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-1"></i>首页</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-fill me-1"></i>首页</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="publish.html"><i class="bi bi-plus-circle-fill me-1"></i>发布</a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person-fill me-1"></i>个人</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
-                    <div class="user-badge text-white" style="background:rgba(255,255,255,0.15);border-radius:50px;padding:6px 16px;display:flex;align-items:center;gap:8px;font-weight:500;">
-                        <span id="navUsername">用户</span>
+                    <div class="user-badge">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <span id="currentUser">用户</span>
                     </div>
                     <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
                 </div>
             </div>
         </div>
     </nav>
-
     <div class="container">
-        <div class="page-header">
-            <div class="icon-circle"><i class="bi bi-pencil-square"></i></div>
-            <h2>发布新委托</h2>
-            <p>填写委托信息，其他同学看到后即可接单</p>
-        </div>
-
         <div class="form-card">
+            <h3><i class="bi bi-pencil-square me-2"></i>发布新委托</h3>
             <form id="publishForm">
                 <input type="hidden" id="userId">
-                <div class="mb-4">
-                    <label class="form-label">
-                        <i class="bi bi-tag-fill"></i>委托标题
-                    </label>
-                    <input type="text" class="form-control" id="title" placeholder="例如：代取快递、图书馆占座..." required>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">分类</label>
+                    <div class="d-flex gap-2">
+                        <input type="radio" class="btn-check" name="category" id="r0" value="0" checked>
+                        <label class="btn btn-outline-primary" for="r0"><i class="bi bi-megaphone me-1"></i>招募</label>
+                        <input type="radio" class="btn-check" name="category" id="r1" value="1">
+                        <label class="btn btn-outline-warning" for="r1"><i class="bi bi-question-circle me-1"></i>求助</label>
+                        <input type="radio" class="btn-check" name="category" id="r2" value="2">
+                        <label class="btn btn-outline-danger" for="r2"><i class="bi bi-cash-stack me-1"></i>雇佣</label>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label class="form-label">
-                        <i class="bi bi-text-paragraph"></i>委托描述
-                    </label>
-                    <textarea class="form-control" id="content" rows="5" placeholder="请详细描述委托内容，包括时间、地点、具体要求等..." required></textarea>
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="hasReward" style="width:44px;height:24px;">
+                        <label class="form-check-label fw-bold" for="hasReward"><i class="bi bi-gift me-1"></i>有报酬</label>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">
-                    <i class="bi bi-send-fill me-2"></i>立即发布
-                </button>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">招募人数</label>
+                    <input type="number" class="form-control" id="recruitCount" value="1" min="1" max="99" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">标题</label>
+                    <input class="form-control" id="title" placeholder="例：代取快递、图书馆占座..." required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">描述</label>
+                    <textarea class="form-control" id="content" rows="5" placeholder="详细描述委托内容..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-send me-1"></i>立即发布</button>
             </form>
-
-            <div class="tips-box mt-4">
-                <i class="bi bi-lightbulb-fill me-2"></i>
-                <strong>温馨提示：</strong>描述越详细，越容易被接单哦！别忘了留下联系方式。
-            </div>
-        </div>
-
-        <div class="footer-bar">
-            &copy; 2026 Komima - 校园委托对接系统 · 课程设计项目
+            <p class="text-muted small text-center mt-3"><i class="bi bi-info-circle me-1"></i>描述越详细，越容易被接单</p>
         </div>
     </div>
-
     <div class="toast-container" id="toastContainer"></div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const API_URL = 'http://localhost:8080/api';
-        const userId = localStorage.getItem('userId');
-        const username = localStorage.getItem('username');
-        const role = localStorage.getItem('role');
+        const API = 'http://localhost:8080/api';
+        const uid = localStorage.getItem('userId');
+        const nick = localStorage.getItem('nickname') || '用户';
+        if (!uid) location.href = 'login.html';
+        document.getElementById('userId').value = uid;
+        document.getElementById('currentUser').textContent = nick;
+        document.getElementById('userAvatar').textContent = nick.charAt(0).toUpperCase();
 
-        const nickname = localStorage.getItem('nickname') || username;
+        function logout() { localStorage.clear(); location.href = 'login.html'; }
 
-        if (!userId) { window.location.href = 'login.html'; }
-
-        document.getElementById('navUsername').textContent = nickname;
-        document.getElementById('userId').value = userId;
-
-         function showToast(message, type) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `custom-toast ${type}`;
-            const icon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill';
-            toast.innerHTML = `<i class="bi ${icon} toast-icon"></i><span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.35s';
-                setTimeout(() => toast.remove(), 350);
-            }, 2500);
+        function toast(msg, type) {
+            type = type || 'success';
+            const t = document.createElement('div');
+            t.className = `custom-toast ${type}`;
+            t.innerHTML = `<span>${msg}</span>`;
+            document.getElementById('toastContainer').appendChild(t);
+            setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 2500);
         }
 
-        function logout() { localStorage.clear(); window.location.href = 'login.html'; }
-
-        document.getElementById('publishForm').addEventListener('submit', (e) => {
+        document.getElementById('publishForm').addEventListener('submit', e => {
             e.preventDefault();
-            const data = {
-                userId: parseInt(document.getElementById('userId').value),
-                title: document.getElementById('title').value,
-                content: document.getElementById('content').value
-            };
-            fetch(`${API_URL}/task/publish`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(res => res.json()).then(data => {
-                if (data.code === 200) {
-                    showToast('委托发布成功！', 'success');
-                    setTimeout(() => { window.location.href = 'index.html'; }, 800);
-                } else {
-                    showToast(data.message, 'error');
-                }
-            }).catch(() => {
-                showToast('网络错误，请检查后端是否启动', 'error');
+            fetch(`${API}/task/publish`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: parseInt(uid),
+                    category: parseInt(document.querySelector('input[name="category"]:checked').value),
+                    hasReward: document.getElementById('hasReward').checked ? 1 : 0,
+                    recruitCount: parseInt(document.getElementById('recruitCount').value) || 1,
+                    title: document.getElementById('title').value,
+                    content: document.getElementById('content').value
+                })
+            }).then(r => r.json()).then(d => {
+                if (d.code === 200) { toast('发布成功！'); setTimeout(() => location.href='index.html', 600); }
+                else toast(d.message, 'error');
             });
         });
     </script>

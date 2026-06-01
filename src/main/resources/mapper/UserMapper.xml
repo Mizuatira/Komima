@@ -15,42 +15,40 @@
         <result column="wechat" property="wechat"/>
         <result column="qq" property="qq"/>
         <result column="email" property="email"/>
+        <result column="avg_rating" property="avgRating"/>
         <result column="create_time" property="createTime"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.komima.entity.User" useGeneratedKeys="true" keyProperty="id">
+    <sql id="selectColumns">
+        u.id, u.username, u.password, u.role, u.nickname, u.gender,
+        u.college, u.major, u.phone, u.wechat, u.qq, u.email, u.create_time,
+        COALESCE((SELECT ROUND(AVG(e.score), 1) FROM evaluate e WHERE e.to_user_id = u.id), 0) AS avg_rating
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user (username, password, role, nickname, create_time)
-        VALUES (#{username}, #{password}, #{role}, #{nickname}, #{createTime})
+        VALUES (#{username}, #{password}, 0, #{nickname}, #{createTime})
     </insert>
 
     <select id="selectById" resultMap="UserResultMap">
-        SELECT * FROM user WHERE id = #{id}
+        SELECT <include refid="selectColumns"/> FROM user u WHERE u.id = #{id}
     </select>
 
     <select id="selectByUsername" resultMap="UserResultMap">
-        SELECT * FROM user WHERE username = #{username}
+        SELECT <include refid="selectColumns"/> FROM user u WHERE u.username = #{username}
     </select>
 
     <select id="selectByUsernameAndPassword" resultMap="UserResultMap">
-        SELECT * FROM user WHERE username = #{username} AND password = #{password}
+        SELECT <include refid="selectColumns"/> FROM user u WHERE u.username = #{username} AND u.password = #{password}
     </select>
 
     <select id="selectAll" resultMap="UserResultMap">
-        SELECT * FROM user ORDER BY create_time DESC
+        SELECT <include refid="selectColumns"/> FROM user u ORDER BY u.create_time DESC
     </select>
 
-    <update id="update" parameterType="com.komima.entity.User">
-        UPDATE user
-        SET username = #{username}, password = #{password}, role = #{role},
-            nickname = #{nickname}, gender = #{gender}, college = #{college},
-            major = #{major}, phone = #{phone}, wechat = #{wechat},
-            qq = #{qq}, email = #{email}, create_time = #{createTime}
-        WHERE id = #{id}
-    </update>
-
-    <update id="updateProfile" parameterType="com.komima.entity.User">
-        UPDATE user
-        SET nickname = #{nickname}, gender = #{gender},
+    <update id="updateProfile">
+        UPDATE user SET
+            nickname = #{nickname}, gender = #{gender},
             college = #{college}, major = #{major},
             phone = #{phone}, wechat = #{wechat},
             qq = #{qq}, email = #{email}

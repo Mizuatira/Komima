@@ -7,17 +7,19 @@ import java.util.List;
 
 public interface TaskService {
 
-    Task publish(TaskDTO taskDTO);
+    Task publish(TaskDTO dto);
 
     List<Task> listAll();
 
+    List<Task> listFiltered(Integer status, Integer category, Integer hasReward, Integer excludeUserId);
+
     List<Task> listByUserId(Integer userId);
 
-    List<Task> listByReceiverId(Integer receiverId);
+    List<Task> listByApplicantId(Integer applicantId);
 
     Task getById(Integer id);
 
-    void acceptTask(Integer taskId, Integer userId);
+    void deleteTask(Integer taskId);
 
-    void updateStatus(Integer taskId, Integer status, Integer userId);
+    void deleteMyPendingTask(Integer taskId, Integer userId);
 }

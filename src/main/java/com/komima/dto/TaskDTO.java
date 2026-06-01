@@ -1,4 +1,3 @@
-
 package com.komima.dto;
 
 import lombok.Data;
@@ -16,4 +15,12 @@ public class TaskDTO {
 
     @NotNull(message = "用户ID不能为空")
     private Integer userId;
+
+    @NotNull(message = "请选择分类")
+    private Integer category;
+
+    private Integer hasReward;
+
+    @NotNull(message = "请设置招募人数")
+    private Integer recruitCount;
 }

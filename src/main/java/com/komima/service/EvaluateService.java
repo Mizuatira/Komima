@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EvaluateService {
 
-    Evaluate create(EvaluateDTO evaluateDTO);
+    Evaluate create(EvaluateDTO dto);
 
     List<Evaluate> getByTaskId(Integer taskId);
 
