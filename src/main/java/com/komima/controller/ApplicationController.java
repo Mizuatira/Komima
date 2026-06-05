@@ -47,4 +47,10 @@ public class ApplicationController {
         applicationService.confirmComplete(id, userId);
         return ApiResponse.success("确认成功", null);
     }
+
+    @PostMapping("/cancel")
+    public ApiResponse<Void> cancel(@RequestParam Integer taskId, @RequestParam Integer userId) {
+        applicationService.cancel(taskId, userId);
+        return ApiResponse.success("已撤销", null);
+    }
 }

@@ -1,8 +1,12 @@
 package com.komima.service.impl;
 
 import com.komima.dto.*;
+import com.komima.entity.Task;
 import com.komima.entity.User;
 import com.komima.exception.BusinessException;
+import com.komima.mapper.ApplicationMapper;
+import com.komima.mapper.EvaluateMapper;
+import com.komima.mapper.TaskMapper;
 import com.komima.mapper.UserMapper;
 import com.komima.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TaskMapper taskMapper;
+
+    @Autowired
+    private ApplicationMapper applicationMapper;
+
+    @Autowired
+    private EvaluateMapper evaluateMapper;
 
     @Override
     @Transactional
@@ -81,6 +94,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Integer id) {
         getById(id);
+        List<Task> tasks = taskMapper.selectByUserId(id);
+        for (Task task : tasks) {
+            evaluateMapper.deleteByTaskId(task.getId());
+            applicationMapper.deleteByTaskId(task.getId());
+            taskMapper.deleteById(task.getId());
+        }
         userMapper.deleteById(id);
     }
 }

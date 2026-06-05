@@ -20,4 +20,6 @@ public interface EvaluateMapper {
     Evaluate selectByTaskAndFromUser(@Param("taskId") Integer taskId, @Param("fromUserId") Integer fromUserId);
 
     int deleteById(@Param("id") Integer id);
+
+    int deleteByTaskId(@Param("taskId") Integer taskId);
 }

@@ -15,4 +15,6 @@ public interface ApplicationService {
     void reject(Integer taskId, Integer applicantId, Integer publisherId);
 
     void confirmComplete(Integer applicationId, Integer userId);
+
+    void cancel(Integer taskId, Integer applicantId);
 }

@@ -36,4 +36,8 @@
     <delete id="deleteById">
         DELETE FROM evaluate WHERE id = #{id}
     </delete>
+
+    <delete id="deleteByTaskId">
+        DELETE FROM evaluate WHERE task_id = #{taskId}
+    </delete>
 </mapper>

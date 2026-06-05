@@ -20,3 +20,6 @@ src/main/resources/application.yml
 
 # Logs
 *.log
+
+# Project docs
+项目文档/

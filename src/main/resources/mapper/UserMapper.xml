@@ -27,7 +27,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user (username, password, role, nickname, create_time)
-        VALUES (#{username}, #{password}, 0, #{nickname}, #{createTime})
+        VALUES (#{username}, #{password}, #{role}, #{nickname}, #{createTime})
     </insert>
 
     <select id="selectById" resultMap="UserResultMap">

@@ -107,4 +107,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     private boolean isTrue(Integer v) { return v != null && v == 1; }
+
+    @Override
+    @Transactional
+    public void cancel(Integer taskId, Integer applicantId) {
+        Application app = applicationMapper.selectByTaskAndApplicant(taskId, applicantId);
+        if (app == null) throw new BusinessException(404, "不存在此申请");
+        if (app.getStatus() != 0) throw new BusinessException("该申请已处理，无法撤销");
+        applicationMapper.deleteById(app.getId());
+    }
 }

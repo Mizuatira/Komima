@@ -135,7 +135,7 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link active" href="index.html"><i class="bi bi-house-fill me-1"></i>首页</a></li>
                     <li class="nav-item"><a class="nav-link" href="publish.html"><i class="bi bi-plus-circle-fill me-1"></i>发布</a></li>
-                    <li class="nav-item" id="adminNav" style="display:none"><a class="nav-link" href="#" id="navAdmin" onclick="showView('admin')"><i class="bi bi-shield-fill me-1"></i>后台</a></li>
+                    <li class="nav-item" id="adminNav"><a class="nav-link" href="#" id="navAdmin" onclick="showView('admin')"><i class="bi bi-shield-fill me-1"></i>后台</a></li>
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="bi bi-person-fill me-1"></i>个人</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
@@ -150,7 +150,29 @@
     </nav>
 
     <div class="container mt-4">
-        <div class="row">
+        <!-- ADMIN -->
+        <div id="viewAdmin" style="display:none">
+            <div style="max-width:900px;margin:0 auto;">
+                <ul class="nav nav-tabs mb-3" id="adminTabs">
+                    <li class="nav-item"><button class="nav-link active" onclick="switchAdminTab('users')">用户管理</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="switchAdminTab('tasks')">委托管理</button></li>
+                </ul>
+                <div id="adminUsersPanel" class="data-card">
+                    <table class="table table-borderless mb-0">
+                        <thead><tr><th>ID</th><th>用户</th><th>角色</th><th>评分</th><th>时间</th><th>操作</th></tr></thead>
+                        <tbody id="userTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="adminTasksPanel" class="data-card" style="display:none">
+                    <table class="table table-borderless mb-0">
+                        <thead><tr><th>ID</th><th>标题</th><th>发布人</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
+                        <tbody id="adminTaskTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="homeRow">
             <div class="col-lg-3 mb-3">
                 <div class="sidebar">
                     <div class="fw-bold mb-2" style="font-size:0.8rem;color:var(--text-muted);">任务状态</div>
@@ -184,26 +206,6 @@
                     <div id="taskList"></div>
                 </div>
 
-                <!-- ADMIN -->
-                <div id="viewAdmin" style="display:none">
-                    <ul class="nav nav-tabs mb-3" id="adminTabs">
-                        <li class="nav-item"><button class="nav-link active" onclick="switchAdminTab('users')">用户管理</button></li>
-                        <li class="nav-item"><button class="nav-link" onclick="switchAdminTab('tasks')">委托管理</button></li>
-                    </ul>
-                    <div id="adminUsersPanel" class="data-card">
-                        <table class="table table-borderless mb-0">
-                            <thead><tr><th>ID</th><th>用户</th><th>角色</th><th>评分</th><th>时间</th><th>操作</th></tr></thead>
-                            <tbody id="userTableBody"></tbody>
-                        </table>
-                    </div>
-                    <div id="adminTasksPanel" class="data-card" style="display:none">
-                        <table class="table table-borderless mb-0">
-                            <thead><tr><th>ID</th><th>标题</th><th>发布人</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
-                            <tbody id="adminTaskTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
                 </div>
             </div>
         </div>
@@ -233,6 +235,7 @@
                     <button class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
                     <button class="btn btn-outline-danger" id="delTaskBtn" onclick="delMyTask()"><i class="bi bi-trash me-1"></i>删除</button>
                     <button class="btn btn-primary" id="applyBtn" onclick="applyTask()"><i class="bi bi-send me-1"></i>申请</button>
+                    <button class="btn btn-warning" id="cancelApplyBtn" onclick="cancelApply()"><i class="bi bi-arrow-return-left me-1"></i>撤销</button>
                     <button class="btn btn-success" id="confirmBtn" onclick="confirmCompleteTask()"><i class="bi bi-check-circle me-1"></i>确认完成</button>
                     <button class="btn btn-warning" id="evaluateBtn" data-bs-toggle="modal" data-bs-target="#evaluateModal"><i class="bi bi-star-fill me-1"></i>评价</button>
                 </div>
@@ -289,7 +292,11 @@
 
         document.getElementById('currentUser').textContent = nick;
         document.getElementById('userAvatar').textContent = nick.charAt(0).toUpperCase();
-        if (role === '1') document.getElementById('adminNav').style.display = '';
+        if (role !== '1') document.getElementById('adminNav').style.display = 'none';
+        if (role === '1' && sessionStorage.getItem('showAdmin') === '1') {
+            showView('admin');
+            sessionStorage.removeItem('showAdmin');
+        }
         fetch(`${API}/user/${uid}`).then(r => r.json()).then(d => {
             if (d.code === 200 && d.data.avgRating) {
                 document.getElementById('currentUser').innerHTML = nick + ` <span style="color:#fbbf24;font-size:0.75rem;">★${d.data.avgRating}</span>`;
@@ -332,6 +339,7 @@
             document.querySelectorAll('.navbar .nav-link').forEach(l => l.classList.remove('active'));
             document.getElementById('viewHome').style.display = v === 'home' ? '' : 'none';
             document.getElementById('viewAdmin').style.display = v === 'admin' ? '' : 'none';
+            document.getElementById('homeRow').style.display = v === 'home' ? '' : 'none';
             stopPoll();
             if (v === 'home') { document.getElementById('viewHome').style.display = ''; document.querySelector('.navbar-nav .nav-link[href="index.html"]').classList.add('active'); loadTasks(); startPoll(); }
             else if (v === 'admin') { document.getElementById('navAdmin').classList.add('active'); loadAdminUsers(); }
@@ -430,7 +438,20 @@
 
                 const isPub = t.userId === uid;
                 document.getElementById('delTaskBtn').style.display = (t.status === 0 && isPub) ? '' : 'none';
-                document.getElementById('applyBtn').style.display = (t.status === 0 && !isPub) ? '' : 'none';
+                document.getElementById('applyBtn').style.display = 'none';
+                document.getElementById('cancelApplyBtn').style.display = 'none';
+                if (t.status === 0 && !isPub) {
+                    fetch(`${API}/application/list/${id}`).then(r => r.json()).then(d => {
+                        if (d.code === 200) {
+                            const myApp = d.data.find(a => a.applicantId === uid && a.status === 0);
+                            if (myApp) {
+                                document.getElementById('cancelApplyBtn').style.display = '';
+                            } else {
+                                document.getElementById('applyBtn').style.display = '';
+                            }
+                        }
+                    });
+                }
                 document.getElementById('confirmBtn').style.display = 'none';
                 document.getElementById('evaluateBtn').style.display = 'none';
 
@@ -508,6 +529,11 @@
         function applyTask() {
             fetch(`${API}/application/apply?taskId=${curTaskId}&userId=${uid}`, { method: 'POST' })
                 .then(r => r.json()).then(d => { showToast(d.code === 200 ? '已申请' : d.message); if (d.code === 200) closeModal(); });
+        }
+        function cancelApply() {
+            if (!confirm('确定撤销申请？')) return;
+            fetch(`${API}/application/cancel?taskId=${curTaskId}&userId=${uid}`, { method: 'POST' })
+                .then(r => r.json()).then(d => { showToast(d.code === 200 ? '已撤销' : d.message); if (d.code === 200) closeModal(); });
         }
         function approveApplicant(tid, aid) {
             fetch(`${API}/application/approve?taskId=${tid}&applicantId=${aid}&publisherId=${uid}`, { method: 'POST' })
