@@ -2,11 +2,13 @@ package com.komima.service.impl;
 
 import com.komima.dto.TaskDTO;
 import com.komima.entity.Task;
+import com.komima.enums.TaskStatus;
 import com.komima.exception.BusinessException;
 import com.komima.mapper.TaskMapper;
 import com.komima.mapper.UserMapper;
 import com.komima.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,5 +77,17 @@ public class TaskServiceImpl implements TaskService {
         if (!task.getUserId().equals(userId)) throw new BusinessException(403, "只能删除自己的委托");
         if (task.getStatus() != 0) throw new BusinessException("只能删除待接单状态的委托");
         taskMapper.deleteById(taskId);
+    }
+
+    @Override
+    @Transactional
+    public void expireTasks(int days) {
+        taskMapper.expirePendingTasks(days, TaskStatus.EXPIRED.getCode());
+    }
+
+    @Scheduled(cron = "0 0 3 * * ?")
+    @Transactional
+    public void scheduledTaskExpiration() {
+        expireTasks(30);
     }
 }

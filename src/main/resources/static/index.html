@@ -158,12 +158,20 @@
                     <li class="nav-item"><button class="nav-link" onclick="switchAdminTab('tasks')">委托管理</button></li>
                 </ul>
                 <div id="adminUsersPanel" class="data-card">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span></span>
+                        <button class="btn btn-sm btn-outline-primary" onclick="window.open(API+'/admin/export/users')"><i class="bi bi-download me-1"></i>导出CSV</button>
+                    </div>
                     <table class="table table-borderless mb-0">
                         <thead><tr><th>ID</th><th>用户</th><th>角色</th><th>评分</th><th>时间</th><th>操作</th></tr></thead>
                         <tbody id="userTableBody"></tbody>
                     </table>
                 </div>
                 <div id="adminTasksPanel" class="data-card" style="display:none">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span></span>
+                        <button class="btn btn-sm btn-outline-primary" onclick="window.open(API+'/admin/export/tasks')"><i class="bi bi-download me-1"></i>导出CSV</button>
+                    </div>
                     <table class="table table-borderless mb-0">
                         <thead><tr><th>ID</th><th>标题</th><th>发布人</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
                         <tbody id="adminTaskTableBody"></tbody>
@@ -226,6 +234,10 @@
                     <div class="detail-row"><span class="detail-label">状态</span><span class="detail-value" id="taskStatus"></span></div>
                     <div class="detail-row"><span class="detail-label">时间</span><span class="detail-value" id="taskCreateTime"></span></div>
                     <div class="detail-row"><span class="detail-label">确认</span><span class="detail-value" id="taskConfirmInfo"></span></div>
+                    <div id="contactSection" style="display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
+                        <strong style="font-size:0.85rem;">联系信息</strong>
+                        <div id="contactContent" class="mt-2" style="font-size:0.85rem;"></div>
+                    </div>
                     <div id="applicantsSection" style="display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;">
                         <strong style="font-size:0.85rem;">申请人</strong>
                         <div id="applicantsList" class="mt-2"></div>
@@ -313,9 +325,9 @@
             setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, 2500);
         }
         function logout() { localStorage.clear(); location.href = 'login.html'; }
-        function S(s) { return {0:'待接单',1:'进行中',2:'已完成'}[s] || '?'; }
-        function Si(s) { return {0:'bi-clock',1:'bi-person-check',2:'bi-check-circle'}[s] || ''; }
-        function Sb(s) { return {0:'status-pending-badge',1:'status-accepted-badge',2:'status-completed-badge'}[s] || ''; }
+        function S(s) { return {0:'待接单',1:'进行中',2:'已完成',3:'已过期'}[s] || '?'; }
+        function Si(s) { return {0:'bi-clock',1:'bi-person-check',2:'bi-check-circle',3:'bi-clock-history'}[s] || ''; }
+        function Sb(s) { return {0:'status-pending-badge',1:'status-accepted-badge',2:'status-completed-badge',3:'status-pending-badge'}[s] || ''; }
         function Sc(s) { return {0:'status-pending',1:'status-accepted',2:'status-completed'}[s] || ''; }
         function T(d) { if (!d) return ''; const dt = new Date(d); return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`; }
         function nickOf(id) { const u = userMap[id]; return u ? u.name : '#' + id; }
@@ -455,6 +467,8 @@
                 document.getElementById('confirmBtn').style.display = 'none';
                 document.getElementById('evaluateBtn').style.display = 'none';
 
+                loadContactInfo(t.userId, isPub);
+
                 if (t.status === 0 && isPub) {
                     document.getElementById('applicantsSection').style.display = '';
                     loadApplicants(id, t);
@@ -520,6 +534,23 @@
                         </div>
                     </div>`;
                 }).join('');
+            });
+        }
+
+        function loadContactInfo(publisherId, isPub) {
+            const sec = document.getElementById('contactSection');
+            const content = document.getElementById('contactContent');
+            fetch(`${API}/user/${publisherId}`).then(r => r.json()).then(d => {
+                if (d.code !== 200 || !d.data) { sec.style.display = 'none'; return; }
+                const u = d.data;
+                const lines = [];
+                if (u.phone) lines.push(`<i class="bi bi-telephone me-1"></i>${u.phone}`);
+                if (u.wechat) lines.push(`<i class="bi bi-wechat me-1"></i>${u.wechat}`);
+                if (u.qq) lines.push(`<i class="bi bi-chat-dots me-1"></i>QQ: ${u.qq}`);
+                if (u.email) lines.push(`<i class="bi bi-envelope me-1"></i>${u.email}`);
+                if (!lines.length) { sec.style.display = 'none'; return; }
+                sec.style.display = '';
+                content.innerHTML = `<div class="d-flex flex-wrap" style="gap:16px;">${lines.map(l => `<span>${l}</span>`).join('')}</div>`;
             });
         }
 

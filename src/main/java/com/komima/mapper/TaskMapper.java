@@ -25,4 +25,6 @@ public interface TaskMapper {
     int updateStatus(@Param("id") Integer id, @Param("status") Integer status);
 
     int deleteById(@Param("id") Integer id);
+
+    int expirePendingTasks(@Param("days") int days, @Param("expiredStatus") int expiredStatus);
 }

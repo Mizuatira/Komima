@@ -66,4 +66,9 @@
     <delete id="deleteById">
         DELETE FROM task WHERE id = #{id}
     </delete>
+
+    <update id="expirePendingTasks">
+        UPDATE task SET status = #{expiredStatus}, update_time = NOW()
+        WHERE status = 0 AND create_time &lt; DATE_SUB(NOW(), INTERVAL #{days} DAY)
+    </update>
 </mapper>

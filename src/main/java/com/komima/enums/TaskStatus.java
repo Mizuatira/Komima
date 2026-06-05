@@ -4,7 +4,8 @@ public enum TaskStatus {
 
     PENDING(0, "待接单"),
     IN_PROGRESS(1, "进行中"),
-    COMPLETED(2, "已完成");
+    COMPLETED(2, "已完成"),
+    EXPIRED(3, "已过期");
 
     private final int code;
     private final String desc;

@@ -22,4 +22,6 @@ public interface TaskService {
     void deleteTask(Integer taskId);
 
     void deleteMyPendingTask(Integer taskId, Integer userId);
+
+    void expireTasks(int days);
 }
