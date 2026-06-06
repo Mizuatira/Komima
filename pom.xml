@@ -94,6 +94,24 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                    <author>true</author>
+                    <version>true</version>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                    <windowtitle>Komima API文档</windowtitle>
+                    <doctitle>Komima - 校园委托平台 API文档</doctitle>
+                    <header>Komima - 校园委托平台</header>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

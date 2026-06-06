@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * 管理员控制器
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @RestController
 @RequestMapping("/api/admin")
 @CrossOrigin(origins = "*")
@@ -23,34 +29,63 @@ public class AdminController {
     @Autowired
     private TaskService taskService;
 
+    /**
+     * 获取所有用户列表
+     * @return 用户列表
+     */
     @GetMapping("/users")
     public ApiResponse<List<User>> users() {
         return ApiResponse.success(userService.getAll());
     }
 
+    /**
+     * 更新用户角色
+     * @param id 用户ID
+     * @param role 角色
+     * @return 响应结果
+     */
     @PutMapping("/user/{id}/role")
     public ApiResponse<Void> updateRole(@PathVariable Integer id, @RequestParam Integer role) {
         userService.updateRole(id, role);
         return ApiResponse.success("角色已更新", null);
     }
 
+    /**
+     * 删除用户
+     * @param id 用户ID
+     * @return 响应结果
+     */
     @DeleteMapping("/user/{id}")
     public ApiResponse<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
         return ApiResponse.success("已删除", null);
     }
 
+    /**
+     * 获取所有任务列表
+     * @return 任务列表
+     */
     @GetMapping("/tasks")
     public ApiResponse<List<Task>> tasks() {
         return ApiResponse.success(taskService.listAll());
     }
 
+    /**
+     * 删除任务
+     * @param id 任务ID
+     * @return 响应结果
+     */
     @DeleteMapping("/task/{id}")
     public ApiResponse<Void> deleteTask(@PathVariable Integer id) {
         taskService.deleteTask(id);
         return ApiResponse.success("已删除", null);
     }
 
+    /**
+     * 导出用户列表为CSV
+     * @param response HTTP响应
+     * @throws Exception IO异常
+     */
     @GetMapping("/export/users")
     public void exportUsers(HttpServletResponse response) throws Exception {
         response.setContentType("text/csv;charset=UTF-8");
@@ -68,6 +103,11 @@ public class AdminController {
         w.flush();
     }
 
+    /**
+     * 导出任务列表为CSV
+     * @param response HTTP响应
+     * @throws Exception IO异常
+     */
     @GetMapping("/export/tasks")
     public void exportTasks(HttpServletResponse response) throws Exception {
         response.setContentType("text/csv;charset=UTF-8");
@@ -84,13 +124,28 @@ public class AdminController {
         w.flush();
     }
 
+    /**
+     * CSV字段转义
+     * @param s 原始字符串
+     * @return 转义后的字符串
+     */
     private String csv(String s) { return s == null ? "" : "\"" + s.replace("\"", "\"\"") + "\""; }
 
+    /**
+     * 性别编码转文字
+     * @param g 性别编码
+     * @return 性别文字
+     */
     private String gender(Integer g) {
         if (g == null) return "";
         return g == 1 ? "男" : g == 2 ? "女" : "未知";
     }
 
+    /**
+     * 任务状态编码转文字
+     * @param s 状态编码
+     * @return 状态文字
+     */
     private String status(Integer s) {
         if (s == null) return "";
         switch (s) {
@@ -102,6 +157,11 @@ public class AdminController {
         }
     }
 
+    /**
+     * 任务分类编码转文字
+     * @param c 分类编码
+     * @return 分类文字
+     */
     private String category(Integer c) {
         if (c == null) return "";
         switch (c) {

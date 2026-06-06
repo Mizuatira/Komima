@@ -5,6 +5,12 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * 评价数据传输对象
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Data
 public class EvaluateDTO {
 

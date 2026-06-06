@@ -1,5 +1,11 @@
 package com.komima.enums;
 
+/**
+ * 任务状态枚举
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 public enum TaskStatus {
 
     PENDING(0, "待接单"),

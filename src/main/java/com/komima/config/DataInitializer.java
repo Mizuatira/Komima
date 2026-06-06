@@ -13,6 +13,12 @@ import javax.sql.DataSource;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 
+/**
+ * 数据初始化类
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -28,6 +34,11 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private ApplicationMapper applicationMapper;
 
+    /**
+     * 应用启动后执行初始化操作
+     * @param args 启动参数
+     * @throws Exception 初始化异常
+     */
     @Override
     public void run(String... args) throws Exception {
         initTables();
@@ -48,6 +59,10 @@ public class DataInitializer implements CommandLineRunner {
         insertTask("急求家教", "初三数学家教，每周两次，时薪80元。", u4.getId(), 0, 2, 1, 1, 0);
     }
 
+    /**
+     * 初始化数据库表
+     * @throws Exception 数据库操作异常
+     */
     private void initTables() throws Exception {
         Statement s = dataSource.getConnection().createStatement();
         s.execute("CREATE TABLE IF NOT EXISTS user (" +
@@ -78,6 +93,14 @@ public class DataInitializer implements CommandLineRunner {
         s.getConnection().close();
     }
 
+    /**
+     * 插入用户
+     * @param username 用户名
+     * @param password 密码
+     * @param role 角色
+     * @param nickname 昵称
+     * @return 插入的用户对象
+     */
     private User insertUser(String username, String password, int role, String nickname) {
         User u = new User()
                 .setUsername(username).setPassword(password)
@@ -86,6 +109,17 @@ public class DataInitializer implements CommandLineRunner {
         return u;
     }
 
+    /**
+     * 插入任务
+     * @param title 任务标题
+     * @param content 任务内容
+     * @param userId 发布者ID
+     * @param status 任务状态
+     * @param category 任务分类
+     * @param hasReward 是否有报酬
+     * @param recruitCount 招募人数
+     * @param delayDays 延迟天数（用于设置创建时间）
+     */
     private void insertTask(String title, String content, int userId, int status, int category, int hasReward, int recruitCount, int delayDays) {
         LocalDateTime now = LocalDateTime.now();
         Task t = new Task()

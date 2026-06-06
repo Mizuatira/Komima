@@ -5,6 +5,12 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 
+/**
+ * 评价实体类
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Data
 @Accessors(chain = true)
 public class Evaluate {

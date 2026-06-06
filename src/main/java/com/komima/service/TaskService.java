@@ -5,6 +5,12 @@ import com.komima.entity.Task;
 
 import java.util.List;
 
+/**
+ * 任务服务接口
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 public interface TaskService {
 
     Task publish(TaskDTO dto);

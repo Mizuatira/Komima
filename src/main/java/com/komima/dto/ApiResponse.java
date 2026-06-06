@@ -3,6 +3,12 @@ package com.komima.dto;
 
 import lombok.Data;
 
+/**
+ * API统一响应类
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Data
 public class ApiResponse<T> {
 

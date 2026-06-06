@@ -17,6 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * 评价服务实现类
+ * 负责处理委托完成后的评价相关业务逻辑
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Service
 public class EvaluateServiceImpl implements EvaluateService {
 
@@ -29,6 +36,18 @@ public class EvaluateServiceImpl implements EvaluateService {
     @Autowired
     private ApplicationMapper applicationMapper;
 
+    /**
+     * 创建评价
+     * 委托完成后，参与者可以相互评价，会进行以下验证：
+     * - 委托是否存在且已完成
+     * - 评价人是否为委托参与者（发布者或已批准的申请者）
+     * - 是否评价了自己
+     * - 是否已经评价过
+     *
+     * @param dto 评价数据传输对象，包含委托ID、评价人ID、被评价人ID、评分和评价内容
+     * @return 创建的评价记录
+     * @throws BusinessException 当验证失败时抛出业务异常
+     */
     @Override
     @Transactional
     public Evaluate create(EvaluateDTO dto) {
@@ -53,9 +72,21 @@ public class EvaluateServiceImpl implements EvaluateService {
         return evaluateMapper.selectByTaskAndFromUser(dto.getTaskId(), from);
     }
 
+    /**
+     * 获取指定委托的所有评价列表
+     *
+     * @param taskId 委托ID
+     * @return 评价记录列表
+     */
     @Override
     public List<Evaluate> getByTaskId(Integer taskId) { return evaluateMapper.selectByTaskId(taskId); }
 
+    /**
+     * 获取指定用户收到的所有评价列表
+     *
+     * @param userId 用户ID
+     * @return 评价记录列表
+     */
     @Override
     public List<Evaluate> getByUserId(Integer userId) { return evaluateMapper.selectByUserId(userId); }
 }

@@ -6,6 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 任务数据访问接口
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Mapper
 public interface TaskMapper {
 

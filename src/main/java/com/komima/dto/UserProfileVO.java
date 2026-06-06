@@ -7,6 +7,12 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * 用户个人主页视图对象
+ * 作者：Mizuatira
+ * 日期：2026/5/20
+ * 版本：1.2
+ */
 @Data
 public class UserProfileVO {
     private User user;
